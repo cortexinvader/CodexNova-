@@ -44,6 +44,19 @@ const { parsePhoneNumber } = require("libphonenumber-js")
 const { PHONENUMBER_MCC } = require('@whiskeysockets/baileys/lib/Utils/generics')
 const { rmSync, existsSync } = require('fs')
 const { join } = require('path')
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+    res.send(`KnightBot-MD is running! Time: ${new Date().toLocaleString()}`);
+});
+
+app.listen(PORT, () => {
+    console.log(`🌐 Express server listening on port ${PORT}`);
+});
+
+// ...rest of your WhatsApp bot code...
 
 // Import lightweight store
 const store = require('./lib/lightweight_store')
