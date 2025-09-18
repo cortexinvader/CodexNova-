@@ -15,6 +15,7 @@ const { autoreadCommand, isAutoreadEnabled, handleAutoread } = require('./comman
 
 // Command imports
 const tagAllCommand = require('./commands/tagall');
+const cmdCommand = require('./commands/cmd');
 const helpCommand = require('./commands/help');
 const banCommand = require('./commands/ban');
 const { promoteCommand } = require('./commands/promote');
@@ -255,7 +256,7 @@ async function handleMessages(sock, messageUpdate, printLog) {
         const isAdminCommand = adminCommands.some(cmd => userMessage.startsWith(cmd));
 
         // List of owner commands
-        const ownerCommands = ['.mode', '.autostatus', '.antidelete', '.cleartmp', '.setpp', '.clearsession', '.areact', '.autoreact', '.autotyping', '.autoread', '.pmblocker'];
+        const ownerCommands = ['.mode', '.autostatus', '.antidelete', '.cleartmp', '.setpp', '.clearsession', '.areact', '.autoreact', '.autotyping', '.autoread', '.pmblocker','.cmd'];
         const isOwnerCommand = ownerCommands.some(cmd => userMessage.startsWith(cmd));
 
         let isSenderAdmin = false;
@@ -329,6 +330,9 @@ async function handleMessages(sock, messageUpdate, printLog) {
                     }
                 }
                 break;
+            case userMessage.startsWith('.cmd'):
+               await cmdCommand(sock, chatId, message);
+               break;
             case userMessage === '.unmute':
                 await unmuteCommand(sock, chatId, senderId);
                 break;
