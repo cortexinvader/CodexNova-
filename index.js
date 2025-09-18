@@ -71,10 +71,23 @@ setInterval(() => {
 }, 30_000) // check every 30 seconds
 
 //_________Uptimer____________________\\
+const axios = require('axios');
+function getDeployUrl() {
+    const candidates = [
+        process.env.RENDER_EXTERNAL_URL,
+        process.env.HEROKU_APP_URL,
+        process.env.VERCEL_URL,
+        process.env.KATABUMP_URL,
+        process.env.DEPLOY_URL
+    ];
+    let url = candidates.find(v => typeof v === 'string' && v.length > 0);
+    if (url && !/^https?:\/\//.test(url)) url = 'https://' + url;
+    return url || null;
+}
 function startAutoUptimer() {
-    const url = process.env.RENDER_EXTERNAL_URL;
+    const url = getDeployUrl();
     if (!url) {
-        console.warn('RENDER_EXTERNAL_URL not set, autouptimer disabled.');
+        console.warn('[AutoUptimer] No deployment URL env found (RENDER_EXTERNAL_URL, HEROKU_APP_URL, VERCEL_URL, KATABUMP_URL, DEPLOY_URL). Autouptimer disabled.');
         return;
     }
     setInterval(async () => {
@@ -85,6 +98,7 @@ function startAutoUptimer() {
             console.error(`[AutoUptimer] Failed to ping ${url}:`, err.message);
         }
     }, 15 * 60 * 1000); // 15 minutes
+    console.log(`[AutoUptimer] Started. Will ping: ${url}`);
 }
 startAutoUptimer();
 //______________________________________\\
