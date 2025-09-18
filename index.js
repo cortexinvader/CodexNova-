@@ -70,6 +70,25 @@ setInterval(() => {
     }
 }, 30_000) // check every 30 seconds
 
+//_________Uptimer____________________\\
+function startAutoUptimer() {
+    const url = process.env.RENDER_EXTERNAL_URL;
+    if (!url) {
+        console.warn('RENDER_EXTERNAL_URL not set, autouptimer disabled.');
+        return;
+    }
+    setInterval(async () => {
+        try {
+            await axios.get(url);
+            console.log(`[AutoUptimer] Pinged ${url} at ${new Date().toLocaleString()}`);
+        } catch (err) {
+            console.error(`[AutoUptimer] Failed to ping ${url}:`, err.message);
+        }
+    }, 15 * 60 * 1000); // 15 minutes
+}
+startAutoUptimer();
+//______________________________________\\
+
 let phoneNumber = "911234567890"
 let owner = JSON.parse(fs.readFileSync('./data/owner.json'))
 
