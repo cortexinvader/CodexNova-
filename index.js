@@ -44,6 +44,7 @@ const { parsePhoneNumber } = require("libphonenumber-js")
 const { PHONENUMBER_MCC } = require('@whiskeysockets/baileys/lib/Utils/generics')
 const { rmSync, existsSync } = require('fs')
 const { join } = require('path')
+/*
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -57,6 +58,7 @@ app.listen(PORT, () => {
 });
 
 // ...rest of your WhatsApp bot code...
+*/
 
 // Import lightweight store
 const store = require('./lib/lightweight_store')
@@ -83,7 +85,7 @@ setInterval(() => {
     }
 }, 30_000) // check every 30 seconds
 
-//_________Uptimer____________________\\
+/*//_________Uptimer____________________\\
 const axios = require('axios');
 function getDeployUrl() {
     const candidates = [
@@ -114,7 +116,7 @@ function startAutoUptimer() {
     console.log(`[AutoUptimer] Started. Will ping: ${url}`);
 }
 startAutoUptimer();
-//______________________________________\\
+//______________________________________\\*/
 
 let phoneNumber = "911234567890"
 let owner = JSON.parse(fs.readFileSync('./data/owner.json'))
