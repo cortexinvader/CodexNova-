@@ -1,3 +1,4 @@
+
 /**
  * Knight Bot - A WhatsApp Bot
  * Copyright (c) 2024 Professor
@@ -381,10 +382,59 @@ async function startXeonBotInc() {
 
 
 // Start the bot with error handling
-startXeonBotInc().catch(error => {
-    console.error('Fatal error:', error)
-    process.exit(1)
+// -- Express server integration for Render-like platforms --
+const express = require('express')
+const app = express()
+const PORT = process.env.PORT || 3000
+let server = null
+
+app.get('/', (req, res) => {
+    res.send('Knight Bot is running.')
 })
+
+app.get('/health', (req, res) => {
+    // You could enhance this to check session file existence, memory, etc.
+    res.json({ status: 'ok', timestamp: new Date().toISOString() })
+})
+
+app.get('/ready', (req, res) => {
+    // Optionally return more details about readiness
+    res.send('ready')
+})
+
+// Start HTTP server first or in parallel — keeps process alive on Render
+server = app.listen(PORT, async () => {
+    console.log(chalk.green(`HTTP server listening on port ${PORT}`))
+    try {
+        // Start the bot after the server is listening
+        await startXeonBotInc().catch(error => {
+            console.error('Fatal error:', error)
+            process.exit(1)
+        })
+    } catch (err) {
+        console.error('Error when starting bot:', err)
+    }
+})
+
+// Graceful shutdown so Render can stop the service cleanly
+const shutdown = async (signal) => {
+    console.log(chalk.yellow(`Received ${signal}. Closing server...`))
+    try {
+        if (server) {
+            await new Promise(resolve => server.close(resolve))
+            console.log(chalk.yellow('HTTP server closed.'))
+        }
+    } catch (e) {
+        console.error('Error closing server:', e)
+    } finally {
+        // allow cleanup work if needed, like closing DB or bot connections
+        process.exit(0)
+    }
+}
+
+process.on('SIGTERM', () => shutdown('SIGTERM'))
+process.on('SIGINT', () => shutdown('SIGINT'))
+
 process.on('uncaughtException', (err) => {
     console.error('Uncaught Exception:', err)
 })
