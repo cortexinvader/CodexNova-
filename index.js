@@ -385,7 +385,7 @@ async function startXeonBotInc() {
 // -- Express server integration for Render-like platforms --
 const express = require('express')
 const app = express()
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 5000
 let server = null
 
 app.get('/', (req, res) => {
