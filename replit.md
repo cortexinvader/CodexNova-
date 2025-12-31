@@ -20,15 +20,26 @@ Knight Bot is a WhatsApp multi-device bot built using the Baileys library. It pr
 3. **Session**: The session folder stores authentication credentials
 
 ## Running the Bot
-The bot runs on port 5000 with an Express health check server.
-
 Command: `node index.js`
+
+### Replit
+- Express server runs on port 3000 with console output
+- Bot connects to WhatsApp using multi-device protocol
+
+### Render Deployment
+1. Add environment variable `PORT` (Render will set this automatically)
+2. Set `NODE_ENV=production` if needed
+3. The bot will:
+   - Listen on 0.0.0.0 (all network interfaces)
+   - Use ownerNumber from settings.js for non-interactive mode
+   - Provide health check endpoints at `/health` and `/ready`
 
 ## Dependencies
 - Node.js 20+
 - ffmpeg (for media processing)
 - @whiskeysockets/baileys (WhatsApp library)
+- express (health check server)
 
-## Environment
-- Express server runs on port 5000 for health checks
-- Bot connects to WhatsApp using multi-device protocol
+## Key Configuration Files
+- `settings.js` - Set `ownerNumber` for Render (pairing won't be interactive)
+- `.env` - Optional environment variables for Render deployment
