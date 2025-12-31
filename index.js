@@ -389,7 +389,14 @@ const PORT = 5000
 let server = null
 
 app.get('/', (req, res) => {
-    res.send('Knight Bot is running.')
+    const status = {
+        bot: global.botname || 'KNIGHT BOT',
+        status: 'online',
+        uptime: process.uptime(),
+        memory: process.memoryUsage(),
+        timestamp: new Date().toISOString()
+    };
+    res.json(status);
 })
 
 app.get('/health', (req, res) => {
