@@ -4,7 +4,7 @@ expertMode = true
 
 [nix]
 channel = "stable-25_05"
-packages = ["ffmpeg"]
+packages = ["ffmpeg", "libuuid"]
 
 [workflows]
 runButton = "Project"
@@ -23,12 +23,12 @@ name = "Start Bot"
 author = "agent"
 
 [workflows.workflow.metadata]
-outputType = "console"
+outputType = "webview"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "node index.js"
-waitForPort = 3000
+waitForPort = 5000
 
 [[ports]]
 localPort = 3000

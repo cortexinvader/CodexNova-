@@ -385,7 +385,7 @@ async function startXeonBotInc() {
 // -- Express server integration for Render-like platforms --
 const express = require('express')
 const app = express()
-const PORT = process.env.PORT || 3000
+const PORT = 5000
 let server = null
 
 app.get('/', (req, res) => {
@@ -407,7 +407,7 @@ server = app.listen(PORT, '0.0.0.0', async () => {
     console.log(chalk.green(`HTTP server listening on 0.0.0.0:${PORT}`))
     try {
         // Start the bot after the server is listening
-        await startXeonBotInc().catch(error => {
+        startXeonBotInc().catch(error => {
             console.error('Fatal error:', error)
             process.exit(1)
         })
